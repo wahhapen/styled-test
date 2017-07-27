@@ -28,9 +28,6 @@ const Card = styled.div`
   margin: 10px;
   width: 100%;
   > * {
-    position: absolute;
-    top: 0;
-    left: 0;
     padding-top: 20px;
     padding-bottom: 20px;
     width: inherit;
@@ -55,18 +52,22 @@ const Card = styled.div`
 `;
 
 const CardFront = styled.div`background-color: #eee;`;
-const CardBack = styled.div`background-color: #222;`;
+const CardBack = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #222;
+`;
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isCardFlipped: false };
-    this.handleFlip = this.handleFlip.bind(this);
-  }
-
-  handleFlip() {
-    this.setState(prevState => ({
-      isCardFlipped: !prevState.isCardFlipped
-    }));
+  handleFlip(card) {
+    this.setState(
+      this.props.cards.map(currentCard => {
+        if (currentCard.id === card.id) {
+          card.isCardFlipped = !card.isCardFlipped;
+        }
+        return currentCard;
+      })
+    );
   }
   render() {
     return (
@@ -79,36 +80,20 @@ class App extends Component {
         <AppIntro>
           <Grid fluid>
             <Row around="md">
-              <Col xs={6} md={3}>
-                <Card flipped={this.state.isCardFlipped} onClick={this.handleFlip}>
-                  <CardBack>Back</CardBack>
-                  <CardFront>
-                    <span role="img" aria-label="alien">
-                      👽
-                    </span>
-                  </CardFront>
-                </Card>
-              </Col>
-              <Col xs={6} md={3}>
-                <Card flipped>
-                  <CardBack>Back</CardBack>
-                  <CardFront>
-                    <span role="img" aria-label="footsteps">
-                      👣
-                    </span>
-                  </CardFront>
-                </Card>
-              </Col>
-              <Col xs={6} md={3}>
-                <Card>
-                  <CardBack>Back</CardBack>
-                  <CardFront>
-                    <span role="img" aria-label="snek">
-                      🐍
-                    </span>
-                  </CardFront>
-                </Card>
-              </Col>
+              {this.props.cards.map((card, index) => {
+                return (
+                  <Col key={index} xs={6} md={3}>
+                    <Card flipped={card.isCardFlipped} onClick={this.handleFlip.bind(this, card)}>
+                      <CardBack>Back</CardBack>
+                      <CardFront>
+                        <span role="img" aria-label={card.name}>
+                          {card.emoji}
+                        </span>
+                      </CardFront>
+                    </Card>
+                  </Col>
+                );
+              })}
             </Row>
           </Grid>
         </AppIntro>
@@ -119,7 +104,8 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   title: state.get('title'),
-  flipped: false
+  cards: state.get('cards'),
+  isCardFlipped: false
 });
 
 export default connect(mapStateToProps)(App);
