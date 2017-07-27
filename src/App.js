@@ -39,7 +39,8 @@ const Card = styled.div`
       inset 0 1px 1px rgba(255, 255, 255, 0.1);
     transform-style: preserve-3d;
     backface-visibility: hidden;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.4s ease-in-out;
+    cursor: pointer;
     &:not(:last-child) {
       z-index: ${props => (props.flipped ? '800' : '1000')};
       transform: rotateX(${props => (props.flipped ? '-180' : '0')}deg);
