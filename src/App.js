@@ -11,7 +11,9 @@ const AppHeader = styled.section`
   text-align: center;
 `;
 const AppIntro = styled.section`
-  padding: 80px 20px 0;
+  padding-top: 80px;
+  padding-right: 20px;
+  padding-left: 20px;
   height: calc(100vh - 140px);
   width: 100%;
   box-sizing: border-box;
@@ -29,7 +31,8 @@ const Card = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    padding: 20px 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
     width: inherit;
     height: inherit;
     text-align: center;
@@ -53,8 +56,18 @@ const Card = styled.div`
 
 const CardFront = styled.div`background-color: #eee;`;
 const CardBack = styled.div`background-color: #222;`;
-
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { isCardFlipped: false };
+    this.handleFlip = this.handleFlip.bind(this);
+  }
+
+  handleFlip() {
+    this.setState(prevState => ({
+      isCardFlipped: !prevState.isCardFlipped
+    }));
+  }
   render() {
     return (
       <div className="App">
@@ -67,7 +80,7 @@ class App extends Component {
           <Grid fluid>
             <Row around="md">
               <Col xs={6} md={3}>
-                <Card>
+                <Card flipped={this.state.isCardFlipped} onClick={this.handleFlip}>
                   <CardBack>Back</CardBack>
                   <CardFront>
                     <span role="img" aria-label="alien">
@@ -105,7 +118,8 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  title: state.get('title')
+  title: state.get('title'),
+  flipped: false
 });
 
 export default connect(mapStateToProps)(App);
