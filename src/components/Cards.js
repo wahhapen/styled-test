@@ -20,6 +20,7 @@ const Card = styled.div`
     transform-style: preserve-3d;
     backface-visibility: hidden;
     transition: all 0.4s ease-in-out;
+    user-select: none;
     cursor: pointer;
     &:not(:last-child) {
       z-index: ${props => (props.flipped ? '800' : '1000')};
@@ -55,7 +56,7 @@ class Cards extends Component {
     return (
       <Grid fluid>
         <Row around="md">
-          {' '}{this.props.cards.map((card, index) => {
+          {this.props.cards.map((card, index) => {
             return (
               <Col key={index} xs={6} md={3}>
                 <Card flipped={card.isCardFlipped} onClick={this.handleFlip.bind(this, card)}>
@@ -68,7 +69,7 @@ class Cards extends Component {
                 </Card>
               </Col>
             );
-          })}{' '}
+          })}
         </Row>
       </Grid>
     );
