@@ -40,5 +40,14 @@
       "prettier",
       "react"
     ]
+  },
+  "resolutions": {
+    "fsevents": "1.2.11",
+    "lodash": "4.17.21",
+    "lodash-es": "4.17.21",
+    "tar": "4.4.19",
+    "fstream": "1.0.12",
+    "node-fetch": "2.6.7",
+    "ua-parser-js": "0.7.24"
   }
 }
